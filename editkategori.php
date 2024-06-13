@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ragam Rasa - Home</title>
+    <title>Ragam Rasa - Edit Kategori</title>
     <link rel="icon" href="Assets/img/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"/>
@@ -20,6 +20,24 @@
     <link href="Assets/css/custome.css" rel="stylesheet">
     <link href="Assets/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        .bg-custome {
+            background-color: #597E52 !important;
+        }
+
+        .btn-custome{
+            color:#fff !important;
+            background-color: #597E52 !important;
+            border-color: #597E52 !important;
+        }
+        
+        .btn-custome:hover{
+            color: #fff !important;
+            background-color: #2c3e29 !important;
+            border-color: #2c3e29 !important;
+        }
+    </style>
 </head>
 <body id="page-top">
     <div id="wrapper">
@@ -58,6 +76,24 @@
                 </a>
             </li>
 
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">Transaksi</div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="pesanan.php">
+                    <i class="fa-solid fa-fw fa-receipt"></i>
+                    <span>Pesanan</span>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="reservasi.php">
+                    <i class="fa-solid fa-fw fa-book"></i>
+                    <span>Reservasi</span>
+                </a>
+            </li>
+
             <hr class="sidebar-divider d-none d-md-block">
 
             <div class="text-center d-none d-md-inline">
@@ -74,10 +110,19 @@
                         </button>
                     </form>
 
-                    <a class="nav-link d-flex align-items-center" href="index.php">
-                        <i class="fas fa-fw fa-house-chimney mr-2" style="color: #6e707e"></i>
-                        <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Home</h1>
-                    </a>
+                    <div class="d-flex align-items-center">
+                        <a class="nav-link d-flex align-items-center" href="kategori.php">
+                            <i class="fas fa-fw fa-list mr-2" style="color: #6e707e"></i>
+                            <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Kategori</h1>
+                        </a>
+
+                        <i class="fa-solid fa-fw fa-angle-right"></i>
+
+                        <a class="nav-link d-flex align-items-center" href="editkategori.php?update=<?= $_GET['update'] ?>">
+                            <i class="fas fa-fw fa-pen mr-2" style="color: #6e707e"></i>
+                            <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Edit Kategori</h1>
+                        </a>
+                    </div>
 
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
@@ -104,9 +149,9 @@
                             </div>
 
                             <div class="d-sm-flex align-items-center justify-content-start">
-                                <button type="submit" name="btn-simpan" class="btn btn-primary">Simpan</button>
+                                <a href="kategori.php" class="btn btn-danger">Batal</a>
                                 <span class="mr-2"></span>
-                                <a href="kategori.php" class="btn btn-secondary">Batalkan</a>
+                                <button type="submit" name="btn-simpan" class="btn btn-custome">Simpan</button>
                             </div>
                         </form>
 

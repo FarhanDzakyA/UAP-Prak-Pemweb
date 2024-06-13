@@ -20,12 +20,40 @@
     <link href="Assets/css/bootstrap4.min.css" rel="stylesheet">
     <link href="Assets/css/custome.css" rel="stylesheet">
     <link href="Assets/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        .bg-custome {
+            background-color: #597E52 !important;
+        }
+
+        .btn-custome{
+            color:#fff !important;
+            background-color: #597E52 !important;
+            border-color: #597E52 !important;
+        }
+        
+        .btn-custome:hover{
+            color: #fff !important;
+            background-color: #2c3e29 !important;
+            border-color: #2c3e29 !important;
+        }
+
+        .page-item.active .page-link {
+            color: white !important;
+            background-color: #597E52 !important;
+        }
+
+        .page-link {
+            color: #597E52 !important;
+        }
+    </style>
 </head>
 <body id="page-top">
     <div id="wrapper">
         <ul class="navbar-nav bg-custome sidebar sidebar-dark accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+          <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img src="Assets/img/brand-logo.png" alt="Logo Brand" width="50px">
                 </div>
@@ -52,9 +80,27 @@
                 </a>
             </li>
             
+            <li class="nav-item">
+                <a class="nav-link" href="kategori.php">
+                    <i class="fa-solid fa-fw fa-list"></i>
+                    <span>Kategori</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">Transaksi</div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="pesanan.php">
+                    <i class="fa-solid fa-fw fa-receipt"></i>
+                    <span>Pesanan</span>
+                </a>
+            </li>
+            
             <li class="nav-item active">
                 <a class="nav-link" href="reservasi.php">
-                    <i class="fa-solid fa-fw fa-calendar-check"></i>
+                    <i class="fa-solid fa-fw fa-book"></i>
                     <span>Reservasi</span>
                 </a>
             </li>
@@ -76,7 +122,7 @@
                     </form>
 
                     <a class="nav-link d-flex align-items-center" href="reservasi.php">
-                        <i class="fas fa-fw fa-calendar-check mr-2" style="color: #6e707e"></i>
+                        <i class="fas fa-fw fa-book mr-2" style="color: #6e707e"></i>
                         <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Reservasi</h1>
                     </a>
 
@@ -97,7 +143,7 @@
                         <h5 class="m-0 font-weight-bold text-dark">
                           Daftar Reservasi
                         </h5>
-                        <a href="tambahreservasi.php" class="d-none d-sm-inline-block btn btn-sm btn-primary rounded-pill shadow-sm">
+                        <a href="tambahreservasi.php" class="d-none d-sm-inline-block btn btn-sm btn-custome rounded-pill shadow-sm">
                           <i class="fa-solid fa-plus fa-sm text-white-100 mr-2"></i>
                           Tambah Reservasi
                         </a>
@@ -129,11 +175,11 @@
                                 <td class="col-jumlah"><?= $result['jumlah_orang'] ?></td>
                                 <td class="col-status"><?= $result['status'] ?></td>
                                 <td class="col-aksi">
-                                  <a href="editreservasi.php?update=<?= $result['id']; ?>" class="btn btn-primary btn-circle btn-sm">
+                                  <a href="editreservasi.php?update=<?= $result['id']; ?>" class="btn btn-outline-dark btn-circle btn-sm">
                                     <i class="fa-solid fa-fw fa-pen"></i>
                                   </a>
                                   <span class="mr-2"></span>
-                                  <a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#hapusReservasi<?= $result['id'] ?>">
+                                  <a href="#" class="btn btn-outline-danger btn-circle btn-sm" data-toggle="modal" data-target="#hapusReservasi<?= $result['id'] ?>">
                                     <i class="fa-solid fa-fw fa-trash"></i>
                                   </a>
                                 </td>
@@ -152,7 +198,7 @@
                                       <input type="hidden" name="id" value="<?= $result['id'] ?>">
 
                                       <div class="modal-body">
-                                        Apakah Anda yakin ingin menghapus reservasi <?= $result['nama_pelanggan'] ?> pada tanggal <?= date('d-m-Y', strtotime($result['waktu_reservasi'])) ?>?
+                                        Apakah Anda yakin ingin menghapus reservasi <b><?= $result['nama_pelanggan'] ?></b> pada tanggal <b><?= date('d-m-Y', strtotime($result['waktu_reservasi'])) ?></b> ?
                                       </div>
 
                                       <div class="modal-footer">

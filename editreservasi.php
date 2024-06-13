@@ -20,6 +20,24 @@
     <link href="Assets/css/custome.css" rel="stylesheet">
     <link href="Assets/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        .bg-custome {
+            background-color: #597E52 !important;
+        }
+
+        .btn-custome{
+            color:#fff !important;
+            background-color: #597E52 !important;
+            border-color: #597E52 !important;
+        }
+        
+        .btn-custome:hover{
+            color: #fff !important;
+            background-color: #2c3e29 !important;
+            border-color: #2c3e29 !important;
+        }
+    </style>
 </head>
 <body id="page-top">
     <div id="wrapper">
@@ -51,9 +69,27 @@
                 </a>
             </li>
             
+            <li class="nav-item">
+                <a class="nav-link" href="kategori.php">
+                    <i class="fa-solid fa-fw fa-list"></i>
+                    <span>Kategori</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">Transaksi</div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="pesanan.php">
+                    <i class="fa-solid fa-fw fa-receipt"></i>
+                    <span>Pesanan</span>
+                </a>
+            </li>
+            
             <li class="nav-item active">
                 <a class="nav-link" href="reservasi.php">
-                    <i class="fa-solid fa-fw fa-list"></i>
+                    <i class="fa-solid fa-fw fa-book"></i>
                     <span>Reservasi</span>
                 </a>
             </li>
@@ -74,10 +110,19 @@
                         </button>
                     </form>
 
-                    <a class="nav-link d-flex align-items-center" href="index.php">
-                        <i class="fas fa-fw fa-house-chimney mr-2" style="color: #6e707e"></i>
-                        <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Home</h1>
-                    </a>
+                    <div class="d-flex align-items-center">
+                        <a class="nav-link d-flex align-items-center" href="reservasi.php">
+                            <i class="fas fa-fw fa-book mr-2" style="color: #6e707e"></i>
+                            <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Reservasi</h1>
+                        </a>
+
+                        <i class="fa-solid fa-fw fa-angle-right"></i>
+
+                        <a class="nav-link d-flex align-items-center" href="editreservasi.php?update=<?= $_GET['update'] ?>">
+                            <i class="fas fa-fw fa-pen mr-2" style="color: #6e707e"></i>
+                            <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Edit Reservasi</h1>
+                        </a>
+                    </div>
 
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
@@ -98,23 +143,33 @@
                     </div>
                     <div class="card-body">
                         <form action="" method="POST">
-                            <div class="form-group w-50">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="waktu_reservasi">Waktu Reservasi <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
+                                        <input type="datetime-local" class="form-control" id="waktu_reservasi" name="waktu_reservasi" value="<?= $result['waktu_reservasi'] ?>" required>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="nomor_meja">Nomor Meja <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
+                                        <input type="number" class="form-control" id="nomor_meja" name="nomor_meja" value="<?= $result['nomor_meja'] ?>" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="nama_pelanggan">Nama Pelanggan <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
-                                <input type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan" value="<?= $result['nama_pelanggan']; ?>" required>
+                                <input type="text" class="form-control" id="nama_pelanggan" name="nama_pelanggan" value="<?= $result['nama_pelanggan'] ?>" required>
                             </div>
-                            <div class="form-group w-50">
-                                <label for="nomor_meja">Nomor Meja <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
-                                <input type="text" class="form-control" id="nomor_meja" name="nomor_meja" value="<?= $result['nomor_meja']; ?>" required>
-                            </div>
-                            <div class="form-group w-50">
-                                <label for="waktu_reservasi">Waktu Reservasi <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
-                                <input type="datetime-local" class="form-control" id="waktu_reservasi" name="waktu_reservasi" value="<?= $result['waktu_reservasi']; ?>" required>
-                            </div>
-                            <div class="form-group w-50">
+                            
+                            <div class="form-group">
                                 <label for="jumlah_orang">Jumlah Orang <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
-                                <input type="number" class="form-control" id="jumlah_orang" name="jumlah_orang" value="<?= $result['jumlah_orang']; ?>" required>
+                                <input type="number" class="form-control" id="jumlah_orang" name="jumlah_orang" value="<?= $result['jumlah_orang'] ?>" required>
                             </div>
-                            <div class="form-group w-50">
+
+                            <div class="form-group">
                                 <label for="status">Status <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
                                 <select class="form-control" id="status" name="status" required>
                                     <option value="Pending" <?= $result['status'] == 'Pending' ? 'selected' : ''; ?>>Pending</option>
@@ -124,9 +179,9 @@
                             </div>
 
                             <div class="d-sm-flex align-items-center justify-content-start">
-                                <button type="submit" name="btn-simpan" class="btn btn-primary">Simpan</button>
+                                <a href="reservasi.php" class="btn btn-danger">Batal</a>
                                 <span class="mr-2"></span>
-                                <a href="reservasi.php" class="btn btn-secondary">Batalkan</a>
+                                <button type="submit" name="btn-simpan" class="btn btn-custome">Simpan</button>
                             </div>
                         </form>
 

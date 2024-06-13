@@ -4,6 +4,10 @@
   $query_table = mysqli_query($mysqli, "SELECT m.id_menu, m.nama_menu, k.nama_kategori, m.harga FROM `menu` m JOIN `kategori` k ON m.id_kategori = k.id_kategori");
 
   $number = 1;
+
+  function rupiahFormat($number) {
+    return 'Rp ' . number_format($number, 0, ',', '.');
+  }
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +25,53 @@
     <link href="Assets/css/custome.css" rel="stylesheet">
     <link href="Assets/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+      .col-no {
+        width: 10%;
+      }
+
+      .col-menu {
+        width: 40%;
+      }
+
+      .col-kategori {
+        width: 20%;
+      }
+
+      .col-harga {
+        width: 20%;
+      }
+
+      .col-aksi {
+        width: 10%;
+      }
+
+      .bg-custome {
+          background-color: #597E52 !important;
+      }
+
+      .btn-custome{
+          color:#fff !important;
+          background-color: #597E52 !important;
+          border-color: #597E52 !important;
+      }
+      
+      .btn-custome:hover{
+          color: #fff !important;
+          background-color: #2c3e29 !important;
+          border-color: #2c3e29 !important;
+      }
+
+      .page-item.active .page-link {
+          color: white !important;
+          background-color: #597E52 !important;
+      }
+
+      .page-link {
+          color: #597E52 !important;
+      }
+    </style>
 </head>
 <body id="page-top">
     <div id="wrapper">
@@ -56,6 +107,24 @@
                 <a class="nav-link" href="kategori.php">
                     <i class="fa-solid fa-fw fa-list"></i>
                     <span>Kategori</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">Transaksi</div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="pesanan.php">
+                    <i class="fa-solid fa-fw fa-receipt"></i>
+                    <span>Pesanan</span>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="reservasi.php">
+                    <i class="fa-solid fa-fw fa-book"></i>
+                    <span>Reservasi</span>
                 </a>
             </li>
 
@@ -97,7 +166,7 @@
                         <h5 class="m-0 font-weight-bold text-dark">
                           Daftar Menu
                         </h5>
-                        <a href="tambahmenu.php" class="d-none d-sm-inline-block btn btn-sm btn-primary rounded-pill shadow-sm">
+                        <a href="tambahmenu.php" class="d-none d-sm-inline-block btn btn-sm btn-custome rounded-pill shadow-sm">
                           <i class="fa-solid fa-plus fa-sm text-white-100 mr-2"></i>
                           Tambah Menu
                         </a>
@@ -121,13 +190,13 @@
                                 <td class="col-no"><?= $number ?></td>
                                 <td class="col-menu"><?= $result['nama_menu'] ?></td>
                                 <td class="col-kategori"><?= $result['nama_kategori'] ?></td>
-                                <td class="col-harga"><?= $result['harga'] ?></td>
+                                <td class="col-harga"><?= rupiahFormat($result['harga']) ?></td>
                                 <td class="col-aksi">
-                                  <a href="editmenu.php?update=<?= $result['id_menu']; ?>" class="btn btn-primary btn-circle btn-sm">
+                                  <a href="editmenu.php?update=<?= $result['id_menu']; ?>" class="btn btn-outline-dark btn-circle btn-sm">
                                     <i class="fa-solid fa-fw fa-pen"></i>
                                   </a>
                                   <span class="mr-2"></span>
-                                  <a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#hapusMenu<?= $result['id_menu'] ?>">
+                                  <a href="#" class="btn btn-outline-danger btn-circle btn-sm" data-toggle="modal" data-target="#hapusMenu<?= $result['id_menu'] ?>">
                                     <i class="fa-solid fa-fw fa-trash"></i>
                                   </a>
                                 </td>
@@ -146,7 +215,7 @@
                                       <input type="hidden" name="id_menu" value="<?= $result['id_menu'] ?>">
 
                                       <div class="modal-body">
-                                        Apakah Anda yakin ingin menghapus menu <?= $result['nama_menu'] ?> ?
+                                        Apakah Anda yakin ingin menghapus menu <b><?= $result['nama_menu'] ?></b> ?
                                       </div>
 
                                       <div class="modal-footer">

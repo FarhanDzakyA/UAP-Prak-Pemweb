@@ -1,9 +1,14 @@
 <?php
-  include "Exe-Files/koneksi.php";
+    include "Exe-Files/koneksi.php";
+    setlocale(LC_ALL, 'IND');
 
-  $query_table = mysqli_query($mysqli, "SELECT * FROM `kategori`");
+    $query_table = mysqli_query($mysqli, "SELECT * FROM `pesanan` ORDER BY `id_pesanan` DESC");
 
-  $number = 1;
+    $number = 1;
+
+    function rupiahFormat($number) {
+      return 'Rp ' . number_format($number, 0, ',', '.');
+  }
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +16,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ragam Rasa - Kategori</title>
+    <title>Ragam Rasa - Pesanan</title>
     <link rel="icon" href="Assets/img/favicon.ico" sizes="16x16 32x32 48x48 64x64 128x128">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"/>
@@ -20,23 +25,12 @@
     <link href="Assets/css/bootstrap4.min.css" rel="stylesheet">
     <link href="Assets/css/custome.css" rel="stylesheet">
     <link href="Assets/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        .col-no {
-          width: 15%;
-        }
-
-        .col-kategori {
-          width: 70%;
-        }
-
-        .col-aksi {
-          width: 15%;
-        }
-
         .bg-custome {
-          background-color: #597E52 !important;
+            background-color: #597E52 !important;
         }
 
         .btn-custome{
@@ -64,7 +58,7 @@
 <body id="page-top">
     <div id="wrapper">
         <ul class="navbar-nav bg-custome sidebar sidebar-dark accordion" id="accordionSidebar">
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon">
                     <img src="Assets/img/brand-logo.png" alt="Logo Brand" width="50px">
                 </div>
@@ -91,7 +85,7 @@
                 </a>
             </li>
             
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="kategori.php">
                     <i class="fa-solid fa-fw fa-list"></i>
                     <span>Kategori</span>
@@ -102,7 +96,7 @@
 
             <div class="sidebar-heading">Transaksi</div>
 
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="pesanan.php">
                     <i class="fa-solid fa-fw fa-receipt"></i>
                     <span>Pesanan</span>
@@ -132,9 +126,9 @@
                         </button>
                     </form>
 
-                    <a class="nav-link d-flex align-items-center" href="kategori.php">
-                        <i class="fas fa-fw fa-list mr-2" style="color: #6e707e"></i>
-                        <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Kategori</h1>
+                    <a class="nav-link d-flex align-items-center" href="pesanan.php">
+                        <i class="fas fa-fw fa-receipt mr-2" style="color: #6e707e"></i>
+                        <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Pesanan</h1>
                     </a>
 
                     <ul class="navbar-nav ml-auto">
@@ -152,11 +146,11 @@
                     <div class="card-header py-3">
                       <div class="d-sm-flex align-items-center justify-content-between">
                         <h5 class="m-0 font-weight-bold text-dark">
-                          Kategori Menu
+                          Daftar Pesanan
                         </h5>
-                        <a href="tambahkategori.php" class="d-none d-sm-inline-block btn btn-sm btn-custome rounded-pill shadow-sm">
+                        <a href="tambahpesanan.php" class="d-none d-sm-inline-block btn btn-sm btn-custome rounded-pill shadow-sm">
                           <i class="fa-solid fa-plus fa-sm text-white-100 mr-2"></i>
-                          Tambah Kategori
+                          Tambah Pesanan
                         </a>
                       </div>
                     </div>
@@ -165,41 +159,57 @@
                         <table class="table table-borderless" id="dataTable" width="100%" cellspacing="0">
                           <thead class="thead-light">
                             <tr>
-                              <th class="col-no">No</th>
-                              <th class="col-kategori">Kategori Menu</th>
-                              <th class="col-aksi">Aksi</th>
+                              <th>No</th>
+                              <th>Waktu Pesanan</th>
+                              <th>Daftar Pesanan</th>
+                              <th>Total Harga</th>
+                              <th>Keterangan</th>
+                              <th>Aksi</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <?php while($result = mysqli_fetch_assoc($query_table)) { ?>
+                            <?php while($result = mysqli_fetch_assoc($query_table)) { 
+                                    $query_temp = mysqli_query($mysqli, "SELECT `nama_menu`
+                                    FROM `detail_pesanan`, `menu` 
+                                    WHERE `id_pesanan` = '$result[id_pesanan]' AND 
+                                    `menu`.`id_menu` = `detail_pesanan`.`id_menu`");
+                            ?>
+
                               <tr>
-                                <td class="col-no"><?= $number ?></td>
-                                <td class="col-kategori"><?= $result['nama_kategori'] ?></td>
-                                <td class="col-aksi">
-                                  <a href="editkategori.php?update=<?= $result['id_kategori']; ?>" class="btn btn-outline-dark btn-circle btn-sm">
+                                <td><?= $number ?></td>
+                                <td><?= strftime('%H:%M %A, %e %B %Y', strtotime($result['waktu_pesanan'])) ?></td>
+                                <td>
+                                    <?php while($temp = mysqli_fetch_assoc($query_temp)) {
+                                        echo $temp['nama_menu'] . "<br>";
+                                    } ?>
+                                </td>
+                                <td><?= rupiahFormat($result['total_harga']) ?></td>
+                                <td><?= $result['keterangan'] ?></td>
+                                <td>
+                                  <a href="editpesanan.php?update=<?= $result['id_pesanan'] ?>" class="btn btn-outline-dark btn-circle btn-sm">
                                     <i class="fa-solid fa-fw fa-pen"></i>
                                   </a>
                                   <span class="mr-2"></span>
-                                  <a href="#" class="btn btn-outline-danger btn-circle btn-sm" data-toggle="modal" data-target="#hapusKategori<?= $result['id_kategori'] ?>">
+                                  <a href="#" class="btn btn-outline-danger btn-circle btn-sm" data-toggle="modal" data-target="#hapusPesanan<?= $result['id_pesanan'] ?>">
                                     <i class="fa-solid fa-fw fa-trash"></i>
                                   </a>
                                 </td>
                               </tr>
 
-                              <div class="modal fade" id="hapusKategori<?= $result['id_kategori'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal fade" id="hapusPesanan<?= $result['id_pesanan'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                   <div class="modal-content">
                                     <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel">Hapus Kategori ?</h5>
+                                      <h5 class="modal-title" id="exampleModalLabel">Hapus Pesanan ?</h5>
                                       <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">x</span>
                                       </button>
                                     </div>
                                     <form action="" method="POST">
-                                      <input type="hidden" name="id_kategori" value="<?= $result['id_kategori'] ?>">
+                                      <input type="hidden" name="id_pesanan" value="<?= $result['id_pesanan'] ?>">
 
                                       <div class="modal-body">
-                                        Apakah Anda yakin ingin menghapus kategori <b><?= $result['nama_kategori'] ?></b> ?
+                                        Apakah Anda yakin ingin menghapus pesanan pada tanggal <b><?= $result['waktu_pesanan'] ?></b> dengan total harga <b><?= rupiahFormat($result['total_harga']) ?></b> ?
                                       </div>
 
                                       <div class="modal-footer">
@@ -207,7 +217,7 @@
                                           Batalkan
                                         </button>
                                         <button type="submit" name="btn-hapus" class="btn btn-danger">
-                                          Ya, Hapus Kategori
+                                          Ya, Hapus Pesanan
                                         </button>
                                       </div>
                                     </form>
@@ -236,10 +246,6 @@
         </div>
     </div>
 
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fa-solid fa-angle-up"></i>
-    </a>
-
     <script src="Assets/js/jquery.min.js"></script>
     <script src="Assets/js/bootstrap.bundle.min.js"></script>
 
@@ -256,9 +262,8 @@
 
 <?php
   if(isset($_POST['btn-hapus'])) {
-    $id_kategori = $_POST['id_kategori'];
-
-    $query_delete = mysqli_query($mysqli, "DELETE FROM `kategori` WHERE `id_kategori` = '$id_kategori'");
+    $id_pesanan = $_POST['id_pesanan'];
+    $query_delete = mysqli_query($mysqli, "DELETE FROM `pesanan` WHERE `id_pesanan` = '$id_pesanan'");
 
     if($query_delete) {
       ?>
@@ -266,10 +271,10 @@
       <script>
           Swal.fire({
             title: "Berhasil!",
-            text: "Data kategori menu berhasil dihapus!",
+            text: "Data pesanan berhasil dihapus!",
             icon: "success"
         }).then(function() {
-          window.location.href = 'kategori.php';
+          window.location.href = 'pesanan.php';
         });
       </script>
 

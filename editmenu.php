@@ -10,6 +10,10 @@
 
     $query_select_kategori = mysqli_query($mysqli, "SELECT * FROM `kategori`");
   }
+
+  function rupiahFormat($number) {
+    return 'Rp ' . number_format($number, 0, ',', '.');
+  }
 ?>
 
 <!DOCTYPE html>
@@ -25,49 +29,85 @@
   <link href="Assets/css/custome.css" rel="stylesheet">
   <link href="Assets/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+      .bg-custome {
+          background-color: #597E52 !important;
+      }
+
+      .btn-custome{
+          color:#fff !important;
+          background-color: #597E52 !important;
+          border-color: #597E52 !important;
+      }
+      
+      .btn-custome:hover{
+          color: #fff !important;
+          background-color: #2c3e29 !important;
+          border-color: #2c3e29 !important;
+      }
+  </style>
 </head>
 <body id="page-top">
   <div id="wrapper">
     <ul class="navbar-nav bg-custome sidebar sidebar-dark accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-        <div class="sidebar-brand-icon">
-          <img src="Assets/img/brand-logo.png" alt="Logo Brand" width="50px">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+          <div class="sidebar-brand-icon">
+            <img src="Assets/img/brand-logo.png" alt="Logo Brand" width="50px">
+            </div>
+            <div class="sidebar-brand-text mx-2">Ragam Rasa</div>
+        </a>
+
+        <hr class="sidebar-divider my-0">
+
+        <li class="nav-item">
+            <a class="nav-link" href="index.php">
+                <i class="fa-solid fa-fw fa-house-chimney"></i>
+                <span>Beranda</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">Daftar Menu</div>
+
+        <li class="nav-item active">
+            <a class="nav-link" href="menu.php">
+                <i class="fa-solid fa-fw fa-bowl-food"></i>
+                <span>Menu</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="kategori.php">
+                <i class="fa-solid fa-fw fa-list"></i>
+                <span>Kategori</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">Transaksi</div>
+
+        <li class="nav-item">
+            <a class="nav-link" href="pesanan.php">
+                <i class="fa-solid fa-fw fa-receipt"></i>
+                <span>Pesanan</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="reservasi.php">
+                <i class="fa-solid fa-fw fa-book"></i>
+                <span>Reservasi</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
-        <div class="sidebar-brand-text mx-2">Ragam Rasa</div>
-      </a>
-
-      <hr class="sidebar-divider my-0">
-
-      <li class="nav-item">
-        <a class="nav-link" href="index.php">
-          <i class="fa-solid fa-fw fa-house-chimney"></i>
-          <span>Beranda</span>
-        </a>
-      </li>
-
-      <hr class="sidebar-divider">
-
-      <div class="sidebar-heading">Daftar Menu</div>
-
-      <li class="nav-item">
-        <a class="nav-link" href="menu.php">
-          <i class="fa-solid fa-fw fa-bowl-food"></i>
-          <span>Menu</span>
-        </a>
-      </li>
-
-      <li class="nav-item active">
-        <a class="nav-link" href="kategori.php">
-          <i class="fa-solid fa-fw fa-list"></i>
-          <span>Kategori</span>
-        </a>
-      </li>
-
-      <hr class="sidebar-divider d-none d-md-block">
-
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
     </ul>
 
     <div id="content-wrapper" class="d-flex flex-column">
@@ -79,10 +119,19 @@
             </button>
           </form>
 
-          <a class="nav-link d-flex align-items-center" href="index.php">
-            <i class="fas fa-fw fa-house-chimney mr-2" style="color: #6e707e"></i>
-            <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Home</h1>
-          </a>
+          <div class="d-flex align-items-center">
+              <a class="nav-link d-flex align-items-center" href="menu.php">
+                  <i class="fas fa-fw fa-bowl-food mr-2" style="color: #6e707e"></i>
+                  <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Menu</h1>
+              </a>
+
+              <i class="fa-solid fa-fw fa-angle-right"></i>
+
+              <a class="nav-link d-flex align-items-center" href="editmenu.php?update=<?= $_GET['update'] ?>">
+                  <i class="fas fa-fw fa-pen mr-2" style="color: #6e707e"></i>
+                  <h1 class="h4 mb-0 text-gray-700 font-weight-bold">Edit Menu</h1>
+              </a>
+          </div>
 
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
@@ -105,14 +154,15 @@
               <form action="" method="POST">
                 <input type="hidden" name="id_menu" value="<?= $menu['id_menu']; ?>">
 
-                <div class="form-group w-50">
+                <div class="form-group">
                   <label for="nama_menu">Nama Menu <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
                   <input type="text" class="form-control" id="nama_menu" name="nama_menu" value="<?= $menu['nama_menu']; ?>" required>
                 </div>
 
-                <div class="form-group w-50">
+                <div class="form-group">
                   <label for="id_kategori">Kategori <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
                   <select class="form-control" id="id_kategori" name="id_kategori" required>
+                    <option value="" disabled>-- Pilih Kategori --</option>
                     <?php while ($kategori = mysqli_fetch_assoc($query_select_kategori)) { ?>
                       <option value="<?= $kategori['id_kategori']; ?>" <?= $kategori['id_kategori'] == $menu['id_kategori'] ? 'selected' : ''; ?>>
                         <?= $kategori['nama_kategori']; ?>
@@ -121,25 +171,29 @@
                   </select>
                 </div>
 
-                <div class="form-group w-50">
+                <div class="form-group">
                   <label for="harga">Harga <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
-                  <input type="number" class="form-control" id="harga" name="harga" value="<?= $menu['harga']; ?>" required>
+                  <input type="text" class="form-control" id="harga" name="harga" onkeyup="formatRupiah(this)" value="<?= rupiahFormat($menu['harga']) ?>" required>
                 </div>
-
+                
                 <div class="d-sm-flex align-items-center justify-content-start">
-                  <button type="submit" name="btn-simpan" class="btn btn-primary">Simpan</button>
+                  <a href="menu.php" class="btn btn-danger">Batal</a>
                   <span class="mr-2"></span>
-                  <a href="menu.php" class="btn btn-secondary">Batalkan</a>
+                  <button type="submit" name="btn-simpan" class="btn btn-custome">Simpan</button>
                 </div>
               </form>
 
               <?php
               // Proses update menu
               if (isset($_POST['btn-simpan'])) {
-                $id_menu = $_POST['id_menu'];
+                $id_menu = mysqli_real_escape_string($mysqli, $_POST['id_menu']);
                 $nama_menu = mysqli_real_escape_string($mysqli, $_POST['nama_menu']);
                 $id_kategori = mysqli_real_escape_string($mysqli, $_POST['id_kategori']);
+
                 $harga = mysqli_real_escape_string($mysqli, $_POST['harga']);
+                $harga = str_replace('Rp', '', $harga);
+                $harga = str_replace('.', '', $harga);
+                $harga = (int)$harga;
 
                 $query_update = mysqli_query($mysqli, "UPDATE `menu` SET `nama_menu`='$nama_menu', `id_kategori`='$id_kategori', `harga`='$harga' WHERE `id_menu` = '$id_menu'");
                 
@@ -184,5 +238,24 @@
   <script src="Assets/js/jquery.dataTables.min.js"></script>
   <script src="Assets/js/dataTables.bootstrap4.min.js"></script>
   <script src="Assets/js/datatables-demo.js"></script>
+
+  <script>
+        function formatRupiah(input) {
+            let value = input.value.replace(/[^\d]/g, '');
+
+            if (value === '' || isNaN(parseInt(value))) {
+                value = 0;
+            } else {
+                value = parseInt(value);
+            }
+
+            value = 'Rp ' + formatNumber(parseInt(value));
+            input.value = value;
+        }
+
+        function formatNumber(number) {
+            return number.toLocaleString('id-ID');
+        }
+    </script>
 </body>
 </html>
