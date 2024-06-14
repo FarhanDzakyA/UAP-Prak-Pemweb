@@ -169,9 +169,9 @@ include "Exe-Files/koneksi.php";
                             <div class="form-group">
                                 <label for="status">Status <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
                                 <select class="form-control" id="status" name="status" required>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Confirmed">Confirmed</option>
-                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="" selected disabled>-- Pilih Status --</option>
+                                    <option value="On Progress">On Progress</option>
+                                    <option value="Completed">Completed</option>
                                 </select>
                             </div>
 

@@ -42,14 +42,14 @@
 
         .btn-custome{
             color:#fff !important;
-            background-color: #C6A969 !important;
-            border-color: #C6A969 !important;
+            background-color: #597E52 !important;
+            border-color: #597E52 !important;
         }
         
         .btn-custome:hover{
             color: #fff !important;
-            background-color: #6d5829 !important;
-            border-color: #6d5829 !important;
+            background-color: #2c3e29 !important;
+            border-color: #2c3e29 !important;
         }
     </style>
 </head>
