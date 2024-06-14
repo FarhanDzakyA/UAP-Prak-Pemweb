@@ -172,9 +172,9 @@
                             <div class="form-group">
                                 <label for="status">Status <i class="fas fa-star-of-life" style="font-size: 7px; vertical-align: top; color: #ED2939"></i></label>
                                 <select class="form-control" id="status" name="status" required>
-                                    <option value="Pending" <?= $result['status'] == 'Pending' ? 'selected' : ''; ?>>Pending</option>
-                                    <option value="Confirmed" <?= $result['status'] == 'Confirmed' ? 'selected' : ''; ?>>Confirmed</option>
-                                    <option value="Cancelled" <?= $result['status'] == 'Cancelled' ? 'selected' : ''; ?>>Cancelled</option>
+                                    <option value="" selected disabled>-- Pilih Status --</option>
+                                    <option value="On Progress" <?= $result['status'] == 'On Progress' ? 'selected' : ''; ?>>On Progress</option>
+                                    <option value="Completed" <?= $result['status'] == 'Completed' ? 'selected' : ''; ?>>Completed</option>
                                 </select>
                             </div>
 
